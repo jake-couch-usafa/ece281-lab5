@@ -94,10 +94,10 @@ begin
                     w_and when "010",
                     w_or when "011",
                     "00000000" when others;
-    o_flags(0) <= w_result(7);                                          --sign
-    o_flags(1) <= '1' when w_result = "00000000" else '0';              --zero
-    o_flags(2) <= w_carry(1);                                           --carry out
-    o_flags(3) <= NOT(i_A(7) XOR w_B(7)) AND (w_B(7) XOR w_result(7));      --overflow
+    o_flags(3) <= w_result(7);                                          --sign
+    o_flags(2) <= '1' when w_result = "00000000" else '0';              --zero
+    o_flags(1) <= w_carry(1);                                           --carry out
+    o_flags(0) <= NOT(i_A(7) XOR w_B(7)) AND (w_B(7) XOR w_result(7));      --overflow
     
     o_result <= w_result;
 end Behavioral;
