@@ -184,9 +184,8 @@ begin
            );
 	   
 	-- CONCURRENT STATEMENTS ----------------------------
-    with w_sign(0) select         --mux for seg
-        seg <= "0000001" when '1',
-                w_seg when others;
+    --negative sign for for segs
+    seg <= "0111111" when (w_sign(0) = '1' and w_sel = "0111") else w_seg;
 	
 	with w_cycle(0) select         --mux for anode
 	    an <= w_sel when '0',
@@ -198,18 +197,31 @@ begin
 	                 w_B when "0100",
 	                 x"00" when others;
 	
+	led(11 downto 4) <= x"00"; --ground LEDs
+	
+	led(3 downto 0) <= w_cycle;
 	-- PROCESSES --------------------------------------------------------------------
-    register_proc : process (w_cycle)
+    register_proc : process (clk)
     begin
-        if w_cycle = "0010" then
-            w_A <= sw(7 downto 0);
+        if btnU = '1' then
+            w_A <= x"00";
+            
+        elsif rising_edge(clk) then
+            if w_cycle = "0010" then
+                w_A <= sw(7 downto 0);
+            end if;
         end if;
     end process register_proc;
     
-    register_proc1 : process (w_cycle)
+    register_proc1 : process (clk)
     begin
-        if w_cycle = "0100" then
-            w_B <= sw(7 downto 0);
+        if btnU = '1' then
+            w_B <= x"00";
+
+        elsif rising_edge(clk) then
+            if w_cycle = "0100" then
+                w_B <= sw(7 downto 0);
+            end if;
         end if;
     end process register_proc1;
 	-----------------------------------------------------	
