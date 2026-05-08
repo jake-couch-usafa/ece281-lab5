@@ -185,7 +185,9 @@ begin
 	   
 	-- CONCURRENT STATEMENTS ----------------------------
     --negative sign for for segs
-    seg <= "0111111" when (w_sign(0) = '1' and w_sel = "0111") else w_seg;
+    seg <= "0111111" when (w_sign(0) = '1' and w_sel = "0111") else
+           "1111111" when (w_sign(0) = '0' and w_sel = "0111")
+            else w_seg;
 	
 	with w_cycle(0) select         --mux for anode
 	    an <= w_sel when '0',
